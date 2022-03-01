@@ -1,0 +1,1 @@
+poetry run python telegram.py & poetry run uvicorn api:app --port 5000
