@@ -25,7 +25,7 @@ def start(message: telebot.types.Message):
         {"username": message.from_user.username},
         key=os.getenv("ACCESS_KEY")
     )
-    bot.send_message(message.chat.id, f"Your token: \n {token}")
+    bot.send_message(message.chat.id, f"Your token: {token}")
 
 
 @bot.message_handler(content_types=["text"])
