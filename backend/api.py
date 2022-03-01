@@ -5,6 +5,7 @@ from fastapi import (
     status,
     responses
 )
+from fastapi.middleware.cors import CORSMiddleware
 import pymongo.collection
 from fastapi import FastAPI
 from pymongo import MongoClient
@@ -14,6 +15,18 @@ client = MongoClient("localhost", 27017)
 users: pymongo.collection.Collection = client.eva_project.users
 
 app = FastAPI()
+
+origins = [
+    "http://eva.centralus.cloudapp.azure.com/"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/get_users")
