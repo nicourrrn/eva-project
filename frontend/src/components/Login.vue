@@ -23,7 +23,7 @@ export default {
 
             if (response.data["Access"] === "OK") {
                 localStorage.setItem("Access-Token", this.token)
-                this.$emit("access-loaded")
+                this.$emit("access-loaded", response.data["Admin"])
             } else {
                 console.log(response)
             }

@@ -10,6 +10,7 @@ import pymongo.collection
 from fastapi import FastAPI
 from pymongo import MongoClient
 import jwt
+from pydantic import BaseModel
 
 client = MongoClient("localhost", 27017)
 users: pymongo.collection.Collection = client.eva_project.users
@@ -30,7 +31,7 @@ app.add_middleware(
 
 
 @app.get("/get_users")
-async def get_user(request: Request):
+async def get_user():
     statuses = []
     for user in users.find():
         statuses.append({"name": user["name"], "location": user["location"], **user["statuses"][-1]})
@@ -55,6 +56,31 @@ async def auth(request: Request, call_next):
 
 
 @app.get("/auth")
-async def main():
-    return {"Access": "OK"}
+async def auth(request: Request):
+    return {"Access": "OK", "Admin": is_admin(request)}
+
+class User(BaseModel):
+    name: str
+    location: str
+    username: str
+
+def is_admin(request: Request):
+    user_data = jwt.decode(
+        token := request.headers.get("Access-Token"),
+        key=os.getenv("ACCESS_KEY"), algorithms=["HS256"])
+    return user_data["username"] == "nicourrrn"
+
+
+@app.post("/new_user")
+async def new_user(user: User, request: Request):
+    if not is_admin(request):
+        return responses.JSONResponse(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            content={"error": "You not admin, how are you doing there?"})
+    if user.username == "" or user.name == "" or user.location == "":
+        return responses.JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST)
+
+    users.insert_one({"name": user.name, "location": user.location,
+                      "username": user.username, "statuses": [{"status": "Null", "scope": 0}]})
 
