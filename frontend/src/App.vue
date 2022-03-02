@@ -24,6 +24,7 @@
       :location="user.location"
       :status="user.status"
       :scope="user.scope"
+      :last_seen=""
       :key="index"
     ></UserStatus>
   </div>
@@ -50,16 +51,21 @@ export default {
     };
   },
   methods: {
-    downloadUpdate() {
-      axios
+    async downloadUpdate() {
+      let users = await axios
         .get(`/get_users.api`, {
           headers: { "Access-Token": localStorage.getItem("Access-Token") },
         })
-        .then((response) => (this.users = response.data))
+        .then((response) => response.data)
         .catch((error) => {
           console.log(error);
           this.needLogin = true;
         });
+      this.users = [];
+      for (let user of users) {
+        user.time = new Date(user.time * 1000).toLocaleString();
+        this.users.push(user);
+      }
     },
     updater() {
       new Promise((resolve) => {

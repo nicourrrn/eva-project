@@ -4,6 +4,7 @@
     <span> {{ location }} </span>
     <span> {{ status }} </span>
     <span> {{ scope }} </span>
+    <span> {{last_seen}} </span>
   </div>
 </template>
 
@@ -11,7 +12,7 @@
 export default {
   name: "UsersStatus",
   props: [
-      "name", "location", "status", "scope"
+      "name", "location", "status", "scope", "last_seen"
   ]
 }
 </script>

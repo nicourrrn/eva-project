@@ -1,3 +1,4 @@
+import time
 import os
 
 from pymongo import (
@@ -13,7 +14,6 @@ admin = os.getenv("ADMIN_ID")
 client = MongoClient("localhost", 27017)
 users: collection.Collection = client.eva_project.users
 
-
 @bot.message_handler(["start"])
 def start(message: telebot.types.Message):
     users_name = map(lambda u: u["username"], users.find())
@@ -27,6 +27,7 @@ def start(message: telebot.types.Message):
     )
     bot.send_message(message.chat.id, "Your token:")
     bot.send_message(message.chat.id, token)
+
 
 @bot.message_handler(content_types=["text"])
 def upload_status(message: telebot.types.Message):
@@ -46,7 +47,10 @@ def upload_status(message: telebot.types.Message):
         return
 
     users.update_one({"username": message.from_user.username},
-                     {"$push": {"statuses": {"scope": scope, "status": " ".join(words[1:])}}})
+                     {"$push": {"statuses":
+                                    {"scope": scope, "status": " ".join(words[1:]),
+                                     "time": int(time.time())}
+                                }})
     bot.send_message(message.chat.id, "Successful!")
 
 
