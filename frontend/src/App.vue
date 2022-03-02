@@ -17,10 +17,10 @@
       <span>Location</span>
       <span>Status</span>
       <span>Score</span>
-        <span>Last update</span>
+      <span>Last update</span>
     </div>
     <UserStatus
-      v-for="(user, index) in this.users"
+      v-for="(user, index) in this.$store.state.getUsers()"
       :name="user.name"
       :location="user.location"
       :status="user.status"
@@ -46,33 +46,15 @@ export default {
   },
   data() {
     return {
-      users: [],
       needLogin: true,
       isAdmin: false,
     };
   },
   methods: {
-    async downloadUpdate() {
-      let users = await axios
-        .get(`/get_users.api`, {
-          headers: { "Access-Token": localStorage.getItem("Access-Token") },
-        })
-        .then((response) => response.data)
-        .catch((error) => {
-          console.log(error);
-          this.needLogin = true;
-        });
-      this.users = []
-      for (let user of users){
-          user.time = new Date(user.time).toLocaleString()
-          console.log(user)
-          this.users.push(user)
-      }
-    },
     updater() {
       new Promise((resolve) => {
         !this.needLogin
-          ? this.downloadUpdate()
+          ? this.$store.state.downloadUpdate()
           : console.log("Token not found");
         setTimeout(() => resolve(), 1000);
       }).then(this.updater);
