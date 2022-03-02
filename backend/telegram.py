@@ -25,8 +25,8 @@ def start(message: telebot.types.Message):
         {"username": message.from_user.username},
         key=os.getenv("ACCESS_KEY")
     )
-    bot.send_message(message.chat.id, f"Your token: {token}")
-
+    bot.send_message(message.chat.id, "Your token:")
+    bot.send_message(message.chat.id, token)
 
 @bot.message_handler(content_types=["text"])
 def upload_status(message: telebot.types.Message):
