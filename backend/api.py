@@ -11,6 +11,7 @@ from fastapi import FastAPI
 from pymongo import MongoClient
 import jwt
 from pydantic import BaseModel
+import time
 
 client = MongoClient("localhost", 27017)
 users: pymongo.collection.Collection = client.eva_project.users
@@ -82,5 +83,6 @@ async def new_user(user: User, request: Request):
             status_code=status.HTTP_400_BAD_REQUEST)
 
     users.insert_one({"name": user.name, "location": user.location,
-                      "username": user.username, "statuses": [{"status": "Null", "scope": 0}]})
+                      "username": user.username, "statuses":
+                          [{"status": "Null", "scope": 0, "time": int(time.time())}]})
 
