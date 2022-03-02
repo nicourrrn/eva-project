@@ -61,10 +61,10 @@ export default {
           console.log(error);
           this.needLogin = true;
         });
-      this.users = [];
-      for (let user of users) {
-        user.time = new Date(user.time * 1000).toLocaleString();
-        this.users.push(user);
+      this.users = []
+      for (let user of users){
+          user = new Date(user.time).toLocaleString()
+          this.users.push(user)
       }
     },
     updater() {
