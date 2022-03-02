@@ -17,6 +17,7 @@
       <span>Location</span>
       <span>Status</span>
       <span>Score</span>
+        <span>Last update</span>
     </div>
     <UserStatus
       v-for="(user, index) in this.users"
@@ -63,7 +64,8 @@ export default {
         });
       this.users = []
       for (let user of users){
-          user = new Date(user.time).toLocaleString()
+          user.time = new Date(user.time).toLocaleString()
+          console.log(user)
           this.users.push(user)
       }
     },
