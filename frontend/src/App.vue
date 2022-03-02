@@ -52,7 +52,7 @@ export default {
   methods: {
     downloadUpdate() {
       axios
-        .get(`http://localhost:8080/get_users.api`, {
+        .get(`/get_users.api`, {
           headers: { "Access-Token": localStorage.getItem("Access-Token") },
         })
         .then((response) => (this.users = response.data))
@@ -75,7 +75,7 @@ export default {
     this.needLogin = token === null || token === "undefined";
     if (!this.needLogin) {
       axios
-        .get("http://localhost:8080/auth.api", {
+        .get("/auth.api", {
           headers: { "Access-Token": this.token },
         })
         .then((response) => (this.isAdmin = response.data["Admin"]));

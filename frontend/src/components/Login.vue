@@ -17,7 +17,7 @@ export default {
     },
     methods: {
         async checkData() {
-            let response = await axios.get("http://localhost:8080/auth.api", {
+            let response = await axios.get("/auth.api", {
                 headers: {"Access-Token": this.token}
             }).catch(error => alert(error))
 

@@ -26,7 +26,7 @@ export default {
   },
     methods: {
       sendData(){
-          axios.post("http://localhost:8080/new_user.api", this.actualUser, {
+          axios.post("/new_user.api", this.actualUser, {
               headers: { "Access-Token": localStorage.getItem("Access-Token") },
           }).then(response => console.log(response.data))
           .catch(error => console.log(`Error!!! ${error}`))
