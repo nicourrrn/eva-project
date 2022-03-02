@@ -7,7 +7,9 @@ nginx-config: config/nginx/nginx.conf config/nginx/mime.types
 nginx: nginx-config vue
 	sudo rm -r /usr/share/nginx/html
 	sudo cp -r frontend/dist /usr/share/nginx/html
-	sudo nginx -s reload
+	sudo certbot install --cert-name servername
+
+
 
 backend: backend/pyproject.toml
 	cd backend && poetry env use python3.10 &&
